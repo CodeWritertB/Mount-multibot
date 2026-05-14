@@ -1,6 +1,29 @@
 from aiogram import Bot
-from src.adapters import BaseAdapter
-from typing import Optional
+from typing import Optional, Protocol
+
+
+class BaseAdapter(Protocol):
+    """
+    Базовый класс для адаптеров платформ
+    Определяет интерфейс для отправки сообщений
+    """
+    
+    async def send_message(self, user_id: int, text: str, image_url: Optional[str] = None) -> None:
+        """
+        Отправка сообщения пользователю
+        :param user_id: ID пользователя
+        :param text: Текст сообщения
+        :param image_url: URL картинки (опционально)
+        """
+        ...
+
+    async def send_notification(self, user_id: int, text: str) -> None:
+        """
+        Отправка уведомления пользователю
+        :param user_id: ID пользователя
+        :param text: Текст уведомления
+        """
+        ...
 
 
 class TelegramAdapter(BaseAdapter):

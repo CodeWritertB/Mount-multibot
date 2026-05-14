@@ -1,12 +1,13 @@
 import uuid
 from datetime import date, time, datetime
+from decimal import Decimal
 from typing import Optional, List
 from sqlalchemy import (
     BigInteger,
     Boolean,
     Date,
     DateTime,
-    Decimal,
+    DECIMAL,
     ForeignKey,
     Integer,
     String,
@@ -58,7 +59,7 @@ class Table(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(100))
     capacity: Mapped[int] = mapped_column(Integer)
-    price_per_hour: Mapped[Decimal] = mapped_column(Decimal(10, 2))
+    price_per_hour: Mapped[Decimal] = mapped_column(DECIMAL(10, 2))
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     # Связи
@@ -81,7 +82,7 @@ class Booking(Base):
     end_time: Mapped[time] = mapped_column(Time)
     guests_count: Mapped[int] = mapped_column(Integer)
     status: Mapped[str] = mapped_column(String(20), default="pending")  # pending, confirmed, paid, cancelled
-    deposit_amount: Mapped[Decimal] = mapped_column(Decimal(10, 2))
+    deposit_amount: Mapped[Decimal] = mapped_column(DECIMAL(10, 2))
     yookassa_payment_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
@@ -103,7 +104,7 @@ class Promocode(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     code: Mapped[str] = mapped_column(String(50), unique=True)
     discount_type: Mapped[str] = mapped_column(String(10))  # percentage, fixed
-    discount_value: Mapped[Decimal] = mapped_column(Decimal(10, 2))
+    discount_value: Mapped[Decimal] = mapped_column(DECIMAL(10, 2))
     max_uses: Mapped[int] = mapped_column(Integer, default=0)
     current_uses: Mapped[int] = mapped_column(Integer, default=0)
     valid_from: Mapped[datetime] = mapped_column(DateTime)
@@ -123,7 +124,7 @@ class BookingPromocode(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     booking_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("bookings.id"))
     promocode_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("promocodes.id"))
-    discount_applied: Mapped[Decimal] = mapped_column(Decimal(10, 2))
+    discount_applied: Mapped[Decimal] = mapped_column(DECIMAL(10, 2))
 
     # Связи
     booking: Mapped["Booking"] = relationship(back_populates="promocodes")

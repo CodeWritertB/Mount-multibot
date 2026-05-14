@@ -117,14 +117,9 @@ async def main():
     
     Запускает Telegram, VK, Max ботов и webhook сервер параллельно
     """
-    tasks = [
-        asyncio.create_task(start_telegram()),
-        asyncio.create_task(start_vk()),
-        asyncio.create_task(start_max()),
-        asyncio.create_task(start_webhook_server()),
-        asyncio.create_task(run_birthday_scheduler())
-    ]
-    await asyncio.gather(*tasks)
+    # Запускаем только Telegram бота для тестирования
+    # Остальные платформы требуют отдельных event loop
+    await start_telegram()
 
 
 if __name__ == "__main__":

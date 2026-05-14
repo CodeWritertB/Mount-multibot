@@ -1,0 +1,12 @@
+aiogram>=3.0.0
+vkbottle>=4.3.11
+sqlalchemy>=2.0.0
+asyncpg
+psycopg2-binary
+redis>=5.0.0
+yookassa
+pydantic-settings
+alembic
+python-dotenv
+uvloop; platform_system != 'Windows'
+aiohttp>=3.8.0
